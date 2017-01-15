@@ -1,3 +1,14 @@
+# Fighting the Zombie
+#
+# For each attack, we need to compute the probability that it rolls at least H damage. We can compute this using dynamic programming.
+# Let f(D, K) be the probability of dealing at least K damage with D dice. For a given input X Y Z we want to compute f(X, H - Z). We can use the following recursive definition:
+# f(D, K) = 1 for K <= 0 (We can always do at least 0 damage)
+# f(0, K) = 0 for K > 0 (We can't do a positive amount of damage with 0 dice)
+# f(D, K) = (1 / Y) * ( f(D - 1, K - 1) + f(D - 1, K - 2) + ... + f(D - 1, K - Y) )
+# This last formula combines the outcomes of all possible die rolls for a single die, and weights them evenly by 1 / Y.
+# In this way, we can compute the probability of success for each attack in O(X * Y * (H - Z)) time.
+# Since the most damage we can do is X * Y, we can trivially reject any case where H - Z > X * Y. That means we can also consider the time complexity to be O(X * Y * X * Y) = O(X^2 * Y^2).
+
 from numpy.polynomial.polynomial import polypow
 from numpy import ones
 import re
